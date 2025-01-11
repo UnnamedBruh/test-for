@@ -24,10 +24,10 @@
         x = i + 1;
         y = i + 2;
 
-        // Multiply, floor the value, clamp, and cast
-        imageData[i] = <u8>Math.min(255, Math.max(0, Math.floor(imageData[i] * mult) as i32)) as u8;
-        imageData[x] = <u8>Math.min(255, Math.max(0, Math.floor(imageData[x] * mult) as i32)) as u8;
-        imageData[y] = <u8>Math.min(255, Math.max(0, Math.floor(imageData[y] * mult) as i32)) as u8;
+        // Multiply, floor the value, and cast to i32 first
+        imageData[i] = <u8>Math.min(255, Math.max(0, Math.floor(<f64>imageData[i] * <f64>mult))) as i32) as u8;
+        imageData[x] = <u8>Math.min(255, Math.max(0, Math.floor(<f64>imageData[x] * <f64>mult))) as i32) as u8;
+        imageData[y] = <u8>Math.min(255, Math.max(0, Math.floor(<f64>imageData[y] * <f64>mult))) as i32) as u8;
     }
 }`;
             

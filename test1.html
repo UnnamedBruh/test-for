@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AssemblyScript Compiler in Browser</title>
+    <script src="https://cdn.jsdelivr.net/npm/assemblyscript@0.21.3/dist/web.js"></script>
+</head>
+<body>
+    <h1>AssemblyScript Compilation Example</h1>
+
+    <script type="module">
+        import asc from "assemblyscript/asc";
+
+        // Function to compile the AssemblyScript code in the browser
+        async function compileAssemblyScript() {
+            // Define your AssemblyScript source code
+            const code = `
+                export function brightenImage(imageData: Uint8ClampedArray, mult: number): void {
+                    const len: number = imageData.length;
+                    for (let i: number = 0; i < len; i += 4) {
+                        imageData[i] = <u8>(Math.min(imageData[i] * mult, 255));
+                        imageData[i + 1] = <u8>(Math.min(imageData[i + 1] * mult, 255));
+                        imageData[i + 2] = <u8>(Math.min(imageData[i + 2] * mult, 255));
+                    }
+                }
+            `;
+            
+            // Create the WebAssembly module using the ASC compiler
+            const wasmModule = await asc.compileString(code, {
+                optimizeLevel: 3,  // Optimization level (0-3)
+                shrinkLevel: 2,    // Shrink level (0-2)
+                target: "wasm",    // Output target as WebAssembly
+            });
+
+            // Output the compiled WebAssembly binary
+            const wasmBinary = wasmModule.binary;
+
+            // Create a WebAssembly instance from the binary
+            const wasmInstance = await WebAssembly.instantiate(wasmBinary);
+
+            // Now you can call the exported functions from the WebAssembly instance
+            const brightenImage = wasmInstance.exports.brightenImage;
+
+            // Example of using the exported function
+            const imageData = new Uint8ClampedArray(16);  // Example image data (4 pixels)
+            imageData.set([50, 100, 150, 255, 200, 50, 100, 255, 100, 200, 250, 255, 10, 10, 10, 255]);
+            const multiplier = 2;  // Example multiplier to brighten the image
+
+            // Call the WebAssembly function
+            brightenImage(imageData, multiplier);
+
+            // Output the result
+            console.log(imageData);  // The modified image data
+        }
+
+        // Compile and execute the AssemblyScript code
+        compileAssemblyScript();
+    </script>
+</body>
+</html>

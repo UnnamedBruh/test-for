@@ -35,6 +35,7 @@
 
             // Output the compiled WebAssembly binary
             const wasmBinary = wasmModule.binary;
+            console.log(wasmBinary);
 
             // Create a WebAssembly instance from the binary
             const wasmInstance = await WebAssembly.instantiate(wasmBinary);

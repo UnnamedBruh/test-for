@@ -25,9 +25,9 @@
         y = i + 2;
 
         // Multiply, floor the value, cast to i32, then clamp and cast to u8
-        imageData[i] = <u8>Math.min(255, Math.max(0, <i32>Math.floor(<f64>imageData[i] * mult))));
-        imageData[x] = <u8>Math.min(255, Math.max(0, <i32>Math.floor(<f64>imageData[x] * mult))));
-        imageData[y] = <u8>Math.min(255, Math.max(0, <i32>Math.floor(<f64>imageData[y] * mult))));
+        imageData[i] = <u8>(Math.min(255, Math.max(0, <i32>Math.floor(<f64>imageData[i] * mult))));
+        imageData[x] = <u8>(Math.min(255, Math.max(0, <i32>Math.floor(<f64>imageData[x] * mult))));
+        imageData[y] = <u8>(Math.min(255, Math.max(0, <i32>Math.floor(<f64>imageData[y] * mult))));
     }
 }`;
             
